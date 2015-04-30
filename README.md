@@ -1,1 +1,1 @@
-# cooperativa
+README: cooperativa
