@@ -18,9 +18,9 @@ Cooperativa.register(function(app, auth, database) {
 
   //We are adding a link to the main menu for all authenticated users
   Cooperativa.menus.add({
-    title: 'cooperativa example page',
-    link: 'cooperativa example page',
-    roles: ['authenticated'],
+    title: 'Cooperativa',
+    link: 'cooperativa.app',
+    roles: ['all'],
     menu: 'main'
   });
   
