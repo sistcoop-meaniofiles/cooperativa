@@ -1,0 +1,49 @@
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-sm-12">
+                <form name="form" novalidate>
+                    <p ng-cloak ng-if="!view.caja.detalle.length">
+                        <strong>No se encontró detalle de caja, si es la primera vez que abre la caja haga click en GUARDAR, sino pongase en contacto con su administrador.</strong>
+                    </p>
+                    <tabset ng-cloak ng-if="view.caja.detalle.length" vertical="true" type="pills" class="tabs-vertical-env tabs-vertical-bordered">
+                        <tab ng-repeat="tab in view.caja.detalle" heading="{{tab.boveda.denominacion}}">
+                            <table class="table table-bordered table-striped table-condensed table-hover">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Valor</th>
+                                    <th>Cantidad</th>
+                                    <th>Sub total</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="item in tab.detalleHistorial | orderBy: 'valor'">
+                                    <td><span ng-bind="$index+1"></span></td>
+                                    <td><span ng-bind="item.valor | currency: ''"></span></td>
+                                    <td><span ng-bind="item.cantidad"></span></td>
+                                    <td>
+                                        <span ng-bind="item.getSubTotal() | currency: ''"></span>
+                                        &nbsp;
+                                        <span ng-bind="tab.boveda.moneda"></span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <th rowspan="1" colspan="3">Total:</th>
+                                    <th rowspan="1" colspan="1"><span ng-bind="tab.total | currency : ''"></span></th>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </tab>
+                    </tabset>
+                    <p>
+                        <button type="button" class="btn btn-primary" ng-click="abrir()" ladda="control.block" data-style="expand-right">Guardar</button>
+                        <button type="button" class="btn btn-white" ui-sref="^.resumen">Cancelar</button>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
