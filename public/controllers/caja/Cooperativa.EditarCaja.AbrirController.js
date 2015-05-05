@@ -1,7 +1,8 @@
-/*define(['../../../module'], function (module) {
-    'use strict';
+'use strict';
 
-    module.controller('CajaAbrirCtrl', function($scope, $state, Notifications){
+/* jshint -W098 */
+angular.module('mean.cooperativa').controller('Cooperativa.EditarCaja.AbrirController',
+    function($scope, $state, Notifications){
 
         $scope.loadParams = function(){
             $scope.view.caja = $scope.params.object;
@@ -48,5 +49,3 @@
         };
 
     });
-
-});*/

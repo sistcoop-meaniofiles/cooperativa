@@ -90,7 +90,7 @@ angular.module('mean.cooperativa').service('$menuItemsCooperativa', [
             var transaccionCliente = this.addItem('Transaccion clientes', '', 'linecons-user');
 
             estructura.addItem('Bovedas', 'cooperativa.app.estructura.buscarBovedas');
-            estructura.addItem('Cajas', 'cooperativa.app.estructura.buscarBovedas');
+            estructura.addItem('Cajas', 'cooperativa.app.estructura.buscarCajas');
 
             transaccionInterna.addItem('Boveda/Caja', 'cooperativa.app.transaccionInterna.buscarTransaccionesBovedaCaja');
             transaccionInterna.addItem('Caja/Caja', 'cooperativa.app.transaccionInterna.buscarTransaccionesCajaCaja');

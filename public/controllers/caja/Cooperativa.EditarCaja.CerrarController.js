@@ -1,7 +1,8 @@
-/*define(['../../../module'], function (module) {
-    'use strict';
+'use strict';
 
-    module.controller('CajaCerrarCtrl', function($scope, $state, $filter, Notifications){
+/* jshint -W098 */
+angular.module('mean.cooperativa').controller('Cooperativa.EditarCaja.CerrarController',
+    function($scope, $state, $filter, Notifications){
 
         $scope.config = {
             checkbox: {
@@ -74,4 +75,3 @@
         };
 
     });
-});*/

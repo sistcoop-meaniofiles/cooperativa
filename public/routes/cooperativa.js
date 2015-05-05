@@ -70,6 +70,52 @@ angular.module('mean.cooperativa').config(['$stateProvider',
                 url: '/cerrar',
                 templateUrl: 'cooperativa/views/boveda/form-editar-boveda-cerrar.html',
                 controller: 'Cooperativa.EditarBoveda.CerrarController'
+            })
+
+            .state('cooperativa.app.estructura.buscarCajas', {
+                url: '/buscarCajas',
+                templateUrl: 'cooperativa/views/caja/form-buscar-caja.html',
+                controller: 'Cooperativa.BuscarCajaController'
+            })
+            .state('cooperativa.app.estructura.crearCaja', {
+                url: '/crearCaja',
+                templateUrl: 'cooperativa/views/caja/form-crear-caja.html',
+                controller: 'Cooperativa.CrearCajaController'
+            })
+            .state('cooperativa.app.estructura.editarCaja', {
+                url: '/caja/:id',
+                templateUrl: 'cooperativa/views/caja/form-editar-caja.html',
+                controller: 'Cooperativa.EditarCajaController',
+                resolve: {
+                    caja: function($state, $stateParams, SGCaja) {
+                        return SGCaja.$find($stateParams.id);
+                    }
+                }
+            })
+            .state('cooperativa.app.estructura.editarCaja.resumen', {
+                url: '/resumen',
+                templateUrl: 'cooperativa/views/caja/form-editar-caja-resumen.html',
+                controller: 'Cooperativa.EditarCaja.ResumenController'
+            })
+            .state('cooperativa.app.estructura.editarCaja.datosPrincipales', {
+                url: '/datosPrincipales',
+                templateUrl: 'cooperativa/views/caja/form-editar-caja-datosPrincipales.html',
+                controller: 'Cooperativa.EditarCaja.DatosPrincipalesController'
+            })
+            .state('cooperativa.app.estructura.editarCaja.abrir', {
+                url: '/abrir',
+                templateUrl: 'cooperativa/views/caja/form-editar-caja-abrir.html',
+                controller: 'Cooperativa.EditarCaja.AbrirController'
+            })
+            .state('cooperativa.app.estructura.editarCaja.cerrar', {
+                url: '/cerrar',
+                templateUrl: 'cooperativa/views/caja/form-editar-caja-cerrar.html',
+                controller: 'Cooperativa.EditarCaja.CerrarController'
+            })
+            .state('cooperativa.app.estructura.editarCaja.bovedas', {
+                url: '/bovedas',
+                templateUrl: 'cooperativa/views/caja/form-editar-caja-bovedas.html',
+                controller: 'Cooperativa.EditarCaja.BovedasController'
             });
 
     }
