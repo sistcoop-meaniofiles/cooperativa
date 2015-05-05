@@ -41,7 +41,31 @@ angular.module('mean.cooperativa').config(['$stateProvider',
                 templateUrl: 'cooperativa/views/boveda/form-crear-boveda.html',
                 controller: 'Cooperativa.CrearBovedaController'
             })
+            .state('cooperativa.app.estructura.editarBoveda', {
+                url: '/boveda/:id',
+                templateUrl: 'cooperativa/views/boveda/form-editar-boveda.html',
+                controller: 'Cooperativa.EditarBovedaController',
+                resolve: {
+                    boveda: function($state, $stateParams, SGBoveda) {
+                        return SGBoveda.$find($stateParams.id);
+                    }
+                }
+            })
+            .state('cooperativa.app.estructura.editarBoveda.resumen', {
+                url: '/resumen',
+                templateUrl: 'cooperativa/views/boveda/form-editar-boveda-resumen.html',
+                controller: 'Cooperativa.EditarBoveda.ResumenController'
+            })
+            .state('cooperativa.app.estructura.editarBoveda.datosPrincipales', {
+                url: '/datosPrincipales',
+                templateUrl: 'cooperativa/views/boveda/form-editar-boveda-datosPrincipales.html',
+                controller: 'Cooperativa.EditarBoveda.DatosPrincipalesController'
+            })
+            .state('cooperativa.app.estructura.editarBoveda.abrir', {
+                url: '/abrir',
+                templateUrl: 'cooperativa/views/boveda/form-editar-boveda-abrir.html',
+                controller: 'Cooperativa.EditarBoveda.AbrirController'
+            });
 
-        ;
     }
 ]);

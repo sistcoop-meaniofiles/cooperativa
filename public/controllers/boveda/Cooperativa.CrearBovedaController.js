@@ -2,10 +2,10 @@
 
 /* jshint -W098 */
 angular.module('mean.cooperativa').controller('Cooperativa.CrearBovedaController', function(
-    $scope, $state, SGCurrency, SGSucursal, toastr){
+    $scope, $state, SGCurrency, SGSucursal, SGBoveda, toastr){
 
     $scope.view = {
-        boveda: undefined
+        boveda: SGBoveda.$build()
     };
 
     $scope.combo = {
@@ -33,18 +33,19 @@ angular.module('mean.cooperativa').controller('Cooperativa.CrearBovedaController
 
     $scope.submit = function(){
         if($scope.form.$valid){
-            $scope.view.boveda.moneda = $scope.combo.selected.moneda.code;
-            Agencia.$new($scope.combo.selected.agencia.id).$addBoveda($scope.view.boveda).then(
+
+            $scope.view.boveda.moneda = $scope.combo.selected.moneda.alphabeticCode;
+            $scope.view.boveda.agencia = $scope.combo.selected.agencia.codigo;
+
+            $scope.view.boveda.$save().then(
                 function(response){
-                    Notifications.success("Boveda creada");
-                    $state.go('^.^.editarBoveda.resumen', {id: response.id});
+                    toastr.success("Boveda creada");
+                    $state.go('^.editarBoveda.resumen', {id: response.id});
                 },
                 function error(error){
-                    Notifications.error(error.data.message+".");
+                    toastr.error(error.data.message);
                 }
             );
-        } else {
-            $scope.form.$setSubmitted();
         }
     };
 

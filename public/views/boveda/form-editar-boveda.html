@@ -1,48 +1,45 @@
-<div class="page-title full-width">
-    <div class="title-env">
-        <h1 class="title ng-binding">Editar boveda</h1>
-        <p class="description ng-binding">Puede editar los datos de la boveda.</p>
-    </div>
+<div class="bg-light lter b-b wrapper-md">
+    <h1 class="m-n font-thin h3">Editar Boveda</h1>
 </div>
 
-<div class="form-wizard" ng-controller="EditarBovedaCtrl">
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div>
 
-    <ul class="tabs">
-        <li ui-sref-active="active">
-            <a href ui-sref=".resumen">
-                Resumen
-            </a>
-        </li>
-        <li ui-sref-active="active">
-            <a href ui-sref=".datosPrincipales">
-                Datos principales
-            </a>
-        </li>
-        <li ui-sref-active="active" sg-data-keep="{module: 'ORGANIZACION', rol: ['JEFE_CAJA']}">
-            <a href ui-sref=".abrir">
-                Abrir boveda
-            </a>
-        </li>
-        <li ui-sref-active="active" sg-data-keep="{module: 'ORGANIZACION', rol: ['JEFE_CAJA']}">
-            <a href ui-sref=".cerrar">
-                Cerrar boveda
-            </a>
-        </li>
-        <li sg-data-keep="{module: 'ORGANIZACION', rol: ['ADMIN']}">
-            <div class="btn-group ">
-                <button type="button" ng-click="desactivar()" class="btn btn-danger" style="margin-bottom: 0px;">Desactivar</button>
+            <div class="tab-container">
+                <ul class="nav nav-tabs">
+                    <li ui-sref-active="active">
+                        <a href ui-sref=".resumen">
+                            Resumen
+                        </a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a href ui-sref=".datosPrincipales">
+                            Datos principales
+                        </a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a href ui-sref=".abrir">
+                            Abrir
+                        </a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a href ui-sref=".cerrar">
+                            Cerrar
+                        </a>
+                    </li>
+                    <li class="pull-right">
+                        <div class="btn-group">
+                            <button type="button" data-ng-click="desactivar()" class="btn btn-danger">Desactivar</button>
+                        </div>
+                    </li>
+                </ul>
+                <div class="tab-pane">
+                    <br/>
+                    <div ui-view></div>
+                </div>
             </div>
-        </li>
-    </ul>
-
-    <div class="tab-content no-margin">
-        <div class="tab-pane with-bg active" >
-
-            <form name="form" ng-submit="submit()" novalidate>
-                <div ui-view></div>
-            </form>
 
         </div>
     </div>
-
 </div>

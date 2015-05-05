@@ -51,7 +51,8 @@ angular.module('mean.cooperativa').controller('Cooperativa.BuscarBovedaControlle
       };
 
       $scope.search = function(){
-        angular.extend({agencia: $scope.combo.selected.agencia.codigo}, $scope.filterOptions);
+        angular.extend($scope.filterOptions, {agencia: $scope.combo.selected.agencia.codigo});
+        console.log($scope.filterOptions);
         $scope.gridOptions.data = SGBoveda.$search($scope.filterOptions).$object;
       };
 
