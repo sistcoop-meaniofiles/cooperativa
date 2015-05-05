@@ -2,10 +2,13 @@
 
 /* jshint -W098 */
 angular.module('mean.cooperativa').controller('Cooperativa.EditarCaja.AbrirController',
-    function($scope, $state, Notifications){
+    function($scope, $state, caja, toastr){
+
+        $scope.view = {
+            caja: caja
+        };
 
         $scope.loadParams = function(){
-            $scope.view.caja = $scope.params.object;
             $scope.view.caja.$getDetalle().then(function(response){
                 $scope.view.caja.detalle = response;
 
