@@ -65,6 +65,11 @@ angular.module('mean.cooperativa').config(['$stateProvider',
                 url: '/abrir',
                 templateUrl: 'cooperativa/views/boveda/form-editar-boveda-abrir.html',
                 controller: 'Cooperativa.EditarBoveda.AbrirController'
+            })
+            .state('cooperativa.app.estructura.editarBoveda.cerrar', {
+                url: '/cerrar',
+                templateUrl: 'cooperativa/views/boveda/form-editar-boveda-cerrar.html',
+                controller: 'Cooperativa.EditarBoveda.CerrarController'
             });
 
     }

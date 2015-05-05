@@ -40,7 +40,7 @@ angular.module('mean.cooperativa').controller('Cooperativa.EditarBoveda.AbrirCon
         return total;
     };
 
-    $scope.abrir = function(){
+    $scope.submit = function(){
         if($scope.view.boveda.abierto === true){
             toastr.warning('Boveda abierta, no se puede abrir nuevamente');
             return;
