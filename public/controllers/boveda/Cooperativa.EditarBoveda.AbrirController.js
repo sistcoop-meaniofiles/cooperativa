@@ -9,7 +9,8 @@ angular.module('mean.cooperativa').controller('Cooperativa.EditarBoveda.AbrirCon
     };
 
     $scope.view.loaded = {
-        detalle: []
+        detalle: [],
+        denominaciones: []
     };
 
     $scope.loadDetalle = function(){
@@ -23,6 +24,13 @@ angular.module('mean.cooperativa').controller('Cooperativa.EditarBoveda.AbrirCon
         });
     };
     $scope.loadDetalle();
+
+    $scope.loadDenominaciones = function(){
+        SGCurrency.$findByAlphabeticCode($scope.view.boveda.moneda).then(function(currency){
+            $scope.view.loaded.denominaciones = currency.$getDenominationsByAlphabeticCode($scope.view.boveda.moneda).$object;
+        });
+    };
+    $scope.loadDenominaciones();
 
     $scope.getTotal = function(){
         var total = 0;
@@ -42,11 +50,18 @@ angular.module('mean.cooperativa').controller('Cooperativa.EditarBoveda.AbrirCon
             return;
         }
 
+        var denominaciones = [];
+        for(var i = 0; i < $scope.view.loaded.denominaciones.length; i++) {
+            denominaciones[i] = $scope.view.loaded.denominaciones[i].value;
+        }
+
         if ($scope.form.$valid) {
-            $scope.view.boveda.$abrir().then(
+            $scope.view.boveda.$abrir(denominaciones).then(
                 function(response){
                     toastr.success('Boveda abierta satisfactoriamente');
                     $scope.view.boveda.abierto = true;
+                    $scope.view.boveda.estadoMovimiento = true;
+                    $scope.loadDetalle();
                 },
                 function error(error){
                     toastr.error(error.data.message);
