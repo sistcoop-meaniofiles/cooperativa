@@ -2,7 +2,15 @@
 
 /* jshint -W098 */
 angular.module('mean.cooperativa').controller('Cooperativa.EditarCaja.CerrarController',
-    function($scope, $state, $filter, Notifications){
+    function ($scope, $state, $filter, caja, toastr) {
+
+        $scope.view = {
+            caja: caja
+        };
+
+        $scope.view.loaded = {
+            detalle: []
+        };
 
         $scope.config = {
             checkbox: {
@@ -10,65 +18,72 @@ angular.module('mean.cooperativa').controller('Cooperativa.EditarCaja.CerrarCont
             }
         };
 
-        $scope.loadParams = function(){
-            $scope.view.caja.$getDetalle().then(function(response){
-                angular.forEach(response, function(row){
-                    angular.forEach(row.detalleHistorial, function(subRow){
-                        subRow.getSubTotal = function(){
+        $scope.loadDetalle = function () {
+            $scope.view.caja.$getDetalle().then(function (response) {
+                angular.forEach(response, function (row) {
+                    angular.forEach(row.detalle, function (subRow) {
+                        subRow.getSubTotal = function () {
                             return this.valor * this.cantidad;
                         };
                     });
 
-                    row.getTotal = function(){
+                    row.getTotal = function () {
                         var total = 0;
-                        angular.forEach(this.detalleHistorial, function(subRow){
+                        angular.forEach(this.detalle, function (subRow) {
                             total = total + subRow.getSubTotal();
                         });
                         return total;
                     };
                 });
-                $scope.view.caja.detalle = angular.copy(response);
+                $scope.view.loaded.detalle = angular.copy(response);
             });
         };
-        $scope.loadParams();
+        $scope.loadDetalle();
 
-        $scope.cerrar = function(){
+        $scope.submit = function () {
 
-            if($scope.view.cajaDB.estado == false){
-                Notifications.info("Caja inactiva, no se puede actualizar.");
+            if ($scope.view.caja.estado === false) {
+                toastr.info('Caja inactiva, no se puede actualizar');
                 return;
             }
 
             //verificar boveda abierta
-            if($scope.view.cajaDB.abierto == false){
-                Notifications.warn('Caja cerrada, no se puede cerrar nuevamente.');
+            if ($scope.view.caja.abierto === false) {
+                toastr.warning('Caja cerrada, no se puede cerrar nuevamente');
                 return;
             }
-            //verificando bovedas abiertas
-            for(var i=0; i<$scope.view.caja.detalle.length; i++){
-                if($scope.view.caja.detalle[i].boveda.abierto != true){
-                    Notifications.warn($scope.view.caja.detalle[i].boveda.denominacion + ' debe estar abierta.');
-                    return;
-                }
-            }
+
+            //verificar que las bovedas esten abiertas
             //cuadrando caja
-            for(var i=0; i<$scope.view.caja.detalle.length; i++){
-                if($scope.view.caja.detalle[i].boveda.saldo != $scope.view.caja.detalle[i].getTotal()){
-                    Notifications.warn('Saldo no coincide, ' + $scope.view.caja.detalle[i].boveda.denominacion + ' debe tener un total de: ' + $filter('currency')($scope.view.caja.detalle[i].boveda.saldo, '', 2));
-                    return;
-                }
-            }
 
             if ($scope.form.$valid) {
-                $scope.view.cajaDB.$cerrar($scope.view.caja.detalle).then(
-                    function(response){
-                        Notifications.success('Caja cerrada');
-                        $scope.view.cajaDB.abierto = false;
-                        $scope.view.caja = angular.copy($scope.view.cajaDB);
-                        $state.go('^.resumen');
+                var detalle = [];
+
+                //obteniendo el detalle
+                for(var i = 0; i<$scope.view.loaded.detalle.length; i++){
+                    detalle[i] = {
+                        moneda: $scope.view.loaded.detalle[i].moneda,
+                        detalle: []
+                    };
+
+                    //poniendo detalle de valor cantidad
+                    for(var j = 0; j<$scope.view.loaded.detalle[i].detalle.length; j++){
+                        detalle[i].detalle[j] = {
+                            valor: $scope.view.loaded.detalle[i].detalle[j].valor,
+                            cantidad: $scope.view.loaded.detalle[i].detalle[j].cantidad
+                        };
+                    }
+                }
+
+                $scope.view.caja.$cerrar(detalle).then(
+                    function (response) {
+                        toastr.success('Caja cerrada satisfactoriamente');
+                        $scope.view.caja.abierto = false;
+                        $scope.view.caja.estadoMovimiento = false;
+                        $scope.loadDetalle();
                     },
-                    function error(error){
-                        Notifications.error(error.data.message+".");
+                    function error(err) {
+                        toastr.error(err.data.message);
                     }
                 );
             }
