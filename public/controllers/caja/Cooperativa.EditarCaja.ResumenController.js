@@ -9,12 +9,24 @@ angular.module('mean.cooperativa').controller('Cooperativa.EditarCaja.ResumenCon
         };
 
         $scope.view.loaded = {
-            agencia: undefined
+            agencia: undefined,
+            bovedaCajas: [],
+            trabajadorCajas: []
         };
 
         $scope.loadAgencia = function(){
             $scope.view.loaded.agencia = SGAgencia.$findByCodigo($scope.view.caja.agencia).$object;
         };
         $scope.loadAgencia();
+
+        $scope.loadBovedaCajas = function(){
+            $scope.view.loaded.bovedaCajas = $scope.view.caja.$getBovedaCajas().$object;
+        };
+        $scope.loadBovedaCajas();
+
+        $scope.loadTrabajadorCajas = function(){
+            $scope.view.loaded.trabajadorCajas = $scope.view.caja.$getTrabajadorCajas().$object;
+        };
+        $scope.loadTrabajadorCajas();
 
     });

@@ -113,34 +113,34 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <table class="table table-striped table-bordered table-condensed">
-                                    <caption ng-show="!view.caja.bovedas.length">No se encontraron bovedas.</caption>
-                                    <thead ng-show="view.caja.bovedas.length">
+                                    <caption ng-show="!view.loaded.bovedaCajas.length">No se encontraron bovedas.</caption>
+                                    <thead ng-show="view.loaded.bovedaCajas.length">
                                     <tr>
                                         <th>#</th>
                                         <th>Moneda.</th>
                                         <th>Denom.</th>
                                         <th>Abierto</th>
                                         <th>Movimiento</th>
-                                        <th>Estado</th>
+                                        <th>Saldo</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr ng-repeat="item in view.caja.bovedas track by item.id | orderBy: id">
+                                    <tr ng-repeat="item in view.loaded.bovedaCajas track by item.id | orderBy: id">
                                         <td><span ng-bind="$index+1"></span></td>
                                         <td>
-                                            <span ng-bind="item.moneda"></span>
+                                            <span ng-bind="item.boveda.moneda"></span>
                                         </td>
                                         <td>
-                                            <span ng-bind="item.denominacion"></span>
+                                            <span ng-bind="item.boveda.denominacion"></span>
                                         </td>
                                         <td>
-                                            <span ng-bind="item.abierto | si_no: 'Abierto'"></span>
+                                            <span ng-bind="item.boveda.abierto | si_no: 'Abierto'"></span>
                                         </td>
                                         <td>
-                                            <span ng-bind="item.estadoMovimiento | si_no:'Congelado'"></span>
+                                            <span ng-bind="item.boveda.estadoMovimiento | si_no:'Congelado'"></span>
                                         </td>
                                         <td>
-                                            <span ng-bind="item.estado | si_no:'Activo'"></span>
+                                            <span ng-bind="item.saldo | currency: ''"></span>
                                         </td>
                                     </tr>
                                     </tbody>
@@ -162,8 +162,8 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <table class="table table-striped table-bordered table-condensed">
-                                    <caption ng-show="!view.caja.trabajadores.length">No se encontraron trabajadores.</caption>
-                                    <thead ng-show="view.caja.trabajadores.length">
+                                    <caption ng-show="!view.loaded.trabajadorCajas.length">No se encontraron trabajadores.</caption>
+                                    <thead ng-show="view.loaded.trabajadorCajas.length">
                                     <tr>
                                         <th>#</th>
                                         <th>T.Doc.</th>
@@ -173,7 +173,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr ng-repeat="item in view.caja.trabajadores track by item.id | orderBy: id">
+                                    <tr ng-repeat="item in view.loaded.trabajadorCajas track by item.id | orderBy: id">
                                         <td><span ng-bind="$index+1"></span></td>
                                         <td>
                                             <span ng-bind="item.tipoDocumento"></span>
