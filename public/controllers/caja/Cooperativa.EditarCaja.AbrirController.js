@@ -2,20 +2,24 @@
 
 /* jshint -W098 */
 angular.module('mean.cooperativa').controller('Cooperativa.EditarCaja.AbrirController',
-    function($scope, $state, caja, toastr){
+    function ($scope, $state, caja, toastr) {
 
         $scope.view = {
             caja: caja
         };
 
-        $scope.loadParams = function(){
-            $scope.view.caja.$getDetalle().then(function(response){
-                $scope.view.caja.detalle = response;
+        $scope.view.loaded = {
+            detalle: []
+        };
 
-                angular.forEach($scope.view.caja.detalle, function(row){
+        $scope.loadDetalle = function () {
+            $scope.view.caja.$getDetalle().then(function (response) {
+                $scope.view.loaded.detalle = response;
+
+                angular.forEach($scope.view.loaded.detalle, function (row) {
                     row.total = 0;
-                    angular.forEach(row.detalleHistorial, function(subRow){
-                        subRow.getSubTotal = function(){
+                    angular.forEach(row.detalle, function (subRow) {
+                        subRow.getSubTotal = function () {
                             return this.valor * this.cantidad;
                         };
                         row.total = row.total + (subRow.valor * subRow.cantidad);
@@ -23,32 +27,33 @@ angular.module('mean.cooperativa').controller('Cooperativa.EditarCaja.AbrirContr
                 });
             });
         };
-        $scope.loadParams();
+        $scope.loadDetalle();
 
-        $scope.abrir = function(){
+        $scope.submit = function () {
 
-            if($scope.view.cajaDB.estado == false){
-                Notifications.info("Caja inactiva, no se puede actualizar.");
+            if ($scope.view.caja.estado === false) {
+                toastr.info('Caja inactiva, no se puede actualizar');
                 return;
             }
-            if($scope.view.cajaDB.abierto == true){
-                Notifications.warn('Caja abierta, no se puede abrir nuevamente.');
+            if ($scope.view.caja.abierto === true) {
+                toastr.warning('Caja abierta, no se puede abrir nuevamente');
                 return;
             }
 
             if ($scope.form.$valid) {
-                $scope.view.cajaDB.$abrir().then(
-                    function(response){
-                        Notifications.success('Caja abierta');
-                        $scope.view.cajaDB.abierto = true;
-                        $scope.view.caja = angular.copy($scope.view.cajaDB);
-                        $state.go('^.resumen');
+                $scope.view.caja.$abrir().then(
+                    function (response) {
+                        toastr.success('Caja abierta');
+                        $scope.view.caja.abierto = true;
+                        $scope.view.caja.estadoMovimiento = true;
+                        $scope.loadDetalle();
                     },
-                    function error(error){
-                        Notifications.error(error.data.message+".");
+                    function error(error) {
+                        toastr.error(err.data.message);
                     }
                 );
             }
+
         };
 
     });
