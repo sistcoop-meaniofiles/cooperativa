@@ -18,6 +18,7 @@
                                 <div class="form-group" ng-class="{ 'has-error' : form.sucursal.$invalid && (form.sucursal.$dirty || form.$submitted)}">
                                     <label>Sucursal</label>
                                     <ui-select name="sucursal" ng-model="combo.selected.sucursal" autofocus required>
+                                        <ui-select-autoload pk-name="id" comparator="view.session.sucursal.id"></ui-select-autoload>
                                         <ui-select-match placeholder="Sucursal">{{$select.selected.denominacion}}</ui-select-match>
                                         <ui-select-choices repeat="item in combo.sucursal | filter: $select.search">
                                             <div ng-bind-html="item.denominacion | highlight: $select.search"></div>
@@ -32,6 +33,7 @@
                                 <div class="form-group" ng-class="{ 'has-error' : form.agencia.$invalid && (form.agencia.$dirty || form.$submitted)}">
                                     <label>Agencia</label>
                                     <ui-select name="agencia" ng-model="combo.selected.agencia" required>
+                                        <ui-select-autoload pk-name="id" comparator="view.session.agencia.id"></ui-select-autoload>
                                         <ui-select-match placeholder="Agencia">{{$select.selected.denominacion}}</ui-select-match>
                                         <ui-select-choices repeat="item in combo.agencia | filter: $select.search">
                                             <div ng-bind-html="item.denominacion | highlight: $select.search"></div>

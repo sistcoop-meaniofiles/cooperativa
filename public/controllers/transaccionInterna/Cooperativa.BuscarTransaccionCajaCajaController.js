@@ -1,16 +1,8 @@
 'use strict';
 
 /* jshint -W098 */
-angular.module('mean.cooperativa').controller('Cooperativa.BuscarBovedaController',
-    function ($scope, $state, sucursalSession, agenciaSession, SGSucursal, SGBoveda) {
-
-        $scope.view = {};
-
-        //si tiene agencia y sucursal definida
-        $scope.view.session = {
-            sucursal: sucursalSession,
-            agencia: agenciaSession
-        };
+angular.module('mean.cooperativa').controller('Cooperativa.BuscarTransaccionCajaCajaController',
+    function($scope, $state, SGSucursal, SGCaja) {
 
         $scope.combo = {
             sucursal: undefined,
@@ -21,15 +13,16 @@ angular.module('mean.cooperativa').controller('Cooperativa.BuscarBovedaControlle
             agencia: undefined
         };
 
-        $scope.loadCombo = function () {
+        $scope.loadCombo = function(){
             $scope.combo.sucursal = SGSucursal.$search().$object;
-            $scope.$watch('combo.selected.sucursal', function () {
-                if (angular.isDefined($scope.combo.selected.sucursal)) {
+            $scope.$watch('combo.selected.sucursal', function(){
+                if(angular.isDefined($scope.combo.selected.sucursal)){
                     $scope.combo.agencia = $scope.combo.selected.sucursal.$getAgencias().$object;
                 }
             }, true);
         };
         $scope.loadCombo();
+
 
 
         $scope.filterOptions = {
@@ -44,14 +37,10 @@ angular.module('mean.cooperativa').controller('Cooperativa.BuscarBovedaControlle
             enableRowHeaderSelection: false,
             multiSelect: false,
             columnDefs: [
-                {field: 'moneda', displayName: 'Moneda'},
+                {field: 'agencia', displayName: 'Cod.agencia'},
                 {field: 'denominacion', displayName: 'Denominacion'},
                 {field: 'abierto', displayName: 'Abierto', cellFilter: 'si_no : "abierto" | uppercase'},
-                {
-                    field: 'estadoMovimiento',
-                    displayName: 'Estado movimiento',
-                    cellFilter: 'si_no : "congelado" | uppercase'
-                },
+                {field: 'estadoMovimiento', displayName: 'Estado movimiento', cellFilter: 'si_no : "congelado" | uppercase'},
                 {field: 'estado', cellFilter: 'si_no : "activo" | uppercase', displayName: 'Estado'},
                 {
                     name: 'edit',
@@ -61,18 +50,18 @@ angular.module('mean.cooperativa').controller('Cooperativa.BuscarBovedaControlle
             ]
         };
 
-        $scope.search = function () {
+        $scope.search = function(){
             angular.extend($scope.filterOptions, {agencia: $scope.combo.selected.agencia.codigo});
-            $scope.gridOptions.data = SGBoveda.$search($scope.filterOptions).$object;
+            $scope.gridOptions.data = SGCaja.$search($scope.filterOptions).$object;
         };
 
-        $scope.nuevo = function () {
-            $state.go('^.crearBoveda');
+        $scope.nuevo = function(){
+            $state.go('^.crearCaja');
         };
 
         $scope.gridActions = {
-            edit: function (row) {
-                $state.go('^.editarBoveda.resumen', {id: row.id});
+            edit: function(row){
+                $state.go('^.editarCaja.resumen', {id: row.id});
             }
         };
 

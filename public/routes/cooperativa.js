@@ -61,6 +61,12 @@ angular.module('mean.cooperativa').config(['$stateProvider',
                 resolve: {
                     loggedin: function ($q, $timeout, $http, $location, Auth) {
                         return checkUserRole('PUBLIC', $q, $timeout, $http, $location, Auth)
+                    },
+                    sucursalSession: function(SGSession){
+                        return SGSession.sucursal;
+                    },
+                    agenciaSession: function(SGSession){
+                        return SGSession.agencia;
                     }
                 }
             })
@@ -70,7 +76,13 @@ angular.module('mean.cooperativa').config(['$stateProvider',
                 controller: 'Cooperativa.CrearBovedaController',
                 resolve: {
                     loggedin: function ($q, $timeout, $http, $location, Auth) {
-                        return checkUserRole('ADMIN', $q, $timeout, $http, $location, Auth)
+                        return checkUserRole('JEFE_CAJA', $q, $timeout, $http, $location, Auth)
+                    },
+                    sucursalSession: function(SGSession){
+                        return SGSession.sucursal;
+                    },
+                    agenciaSession: function(SGSession){
+                        return SGSession.agencia;
                     }
                 }
             })
@@ -210,7 +222,30 @@ angular.module('mean.cooperativa').config(['$stateProvider',
                         return checkUserRole('ADMIN', $q, $timeout, $http, $location, Auth)
                     }
                 }
-            });
+            })
+
+            .state('cooperativa.app.transaccionInterna.buscarTransaccionesBovedaCaja', {
+                url: '/buscarTransaccionesBovedaCaja',
+                templateUrl: 'cooperativa/views/transaccionInterna/form-buscar-transaccionBovedaCaja.html',
+                controller: 'Cooperativa.BuscarTransaccionBovedaCajaController',
+                resolve: {
+                    loggedin: function ($q, $timeout, $http, $location, Auth) {
+                        return checkUserRole('PUBLIC', $q, $timeout, $http, $location, Auth)
+                    }
+                }
+            })
+
+            .state('cooperativa.app.transaccionInterna.buscarTransaccionesCajaCaja', {
+                url: '/buscarTransaccionesCajaCaja',
+                templateUrl: 'cooperativa/views/transaccionInterna/form-buscar-transaccionCajaCaja.html',
+                controller: 'Cooperativa.BuscarTransaccionCajaCajaController',
+                resolve: {
+                    loggedin: function ($q, $timeout, $http, $location, Auth) {
+                        return checkUserRole('PUBLIC', $q, $timeout, $http, $location, Auth)
+                    }
+                }
+            })
+        ;
 
     }
 ]);

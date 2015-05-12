@@ -2,10 +2,16 @@
 
 /* jshint -W098 */
 angular.module('mean.cooperativa').controller('Cooperativa.CrearBovedaController', function(
-    $scope, $state, SGCurrency, SGSucursal, SGBoveda, toastr){
+    $scope, $state, sucursalSession, agenciaSession, SGCurrency, SGSucursal, SGBoveda, toastr){
 
     $scope.view = {
         boveda: SGBoveda.$build()
+    };
+
+    //si tiene agencia y sucursal definida
+    $scope.view.session = {
+        sucursal: sucursalSession,
+        agencia: agenciaSession
     };
 
     $scope.combo = {
