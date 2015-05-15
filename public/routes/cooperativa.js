@@ -63,10 +63,10 @@ angular.module('mean.cooperativa').config(['$stateProvider',
                         return checkUserRole('PUBLIC', $q, $timeout, $http, $location, Auth)
                     },
                     sucursalSession: function(SGSession){
-                        return SGSession.sucursal;
+                        return SGSession.getSucursal();
                     },
                     agenciaSession: function(SGSession){
-                        return SGSession.agencia;
+                        return SGSession.getAgencia();
                     }
                 }
             })
@@ -79,10 +79,10 @@ angular.module('mean.cooperativa').config(['$stateProvider',
                         return checkUserRole('JEFE_CAJA', $q, $timeout, $http, $location, Auth)
                     },
                     sucursalSession: function(SGSession){
-                        return SGSession.sucursal;
+                        return SGSession.getSucursal();
                     },
                     agenciaSession: function(SGSession){
-                        return SGSession.agencia;
+                        return SGSession.getAgencia();
                     }
                 }
             })

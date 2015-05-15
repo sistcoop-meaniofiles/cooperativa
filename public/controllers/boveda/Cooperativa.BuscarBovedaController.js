@@ -22,12 +22,18 @@ angular.module('mean.cooperativa').controller('Cooperativa.BuscarBovedaControlle
         };
 
         $scope.loadCombo = function () {
-            $scope.combo.sucursal = SGSucursal.$search().$object;
-            $scope.$watch('combo.selected.sucursal', function () {
-                if (angular.isDefined($scope.combo.selected.sucursal)) {
-                    $scope.combo.agencia = $scope.combo.selected.sucursal.$getAgencias().$object;
-                }
-            }, true);
+
+            //CARGAR LOS COMBOS CON TODAS LAS SUCURSALES Y AGENCIAS
+            /*$scope.combo.sucursal = SGSucursal.$search().$object;
+             $scope.$watch('combo.selected.sucursal', function () {
+             if (angular.isDefined($scope.combo.selected.sucursal)) {
+             $scope.combo.agencia = $scope.combo.selected.sucursal.$getAgencias().$object;
+             }
+             }, true);*/
+
+            //Cargar los combos solo con las sucursales y agencias del usuario que esta en session
+            $scope.combo.sucursal = [$scope.view.session.sucursal];
+            $scope.combo.agencia = [$scope.view.session.agencia];
         };
         $scope.loadCombo();
 

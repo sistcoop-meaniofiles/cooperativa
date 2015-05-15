@@ -55,13 +55,14 @@
                                         <ui-select-choices repeat="item in combo.moneda | filter: $select.search">
                                             <div ng-bind-html="item.currency | highlight: $select.search"></div>
                                             <small>Alphabetic: {{item.alphabeticCode}}</small>
+                                            <small>{{item.entity}}</small>
                                         </ui-select-choices>
                                     </ui-select>
                                     <div ng-messages="form.moneda.$error" ng-if="form.moneda.$dirty || form.$submitted">
                                         <div class="has-error" ng-message="required">Ingrese moneda.</div>
                                         <div class="has-error" ng-message="disponible">Boveda con moneda seleccionada existente.</div>
                                     </div>
-                                    <span ng-show="form.moneda.$pending" us-spinner="spinnerConfig"></span>
+                                    <span ng-show="form.moneda.$pending" us-spinner="{radius:4,width:1,length: 2,top: '56%',left: '89.8%', className: 'spinner-xs'}"></span>
                                 </div>
                             </div>
                             <div class="col-sm-4">
