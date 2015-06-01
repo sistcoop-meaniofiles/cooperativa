@@ -1,16 +1,10 @@
 'use strict';
 
 /* jshint -W098 */
-angular.module('mean.cooperativa').controller('Cooperativa.CrearBovedaController', function ($scope, $state, sucursalSession, agenciaSession, SGCurrency, SGSucursal, SGBoveda, toastr) {
+angular.module('mean.cooperativa').controller('Cooperativa.CrearBovedaController', function ($scope, $state, sucursales, agencias, SGCurrency, SGSucursal, SGBoveda, toastr) {
 
     $scope.view = {
         boveda: SGBoveda.$build()
-    };
-
-    //si tiene agencia y sucursal definida
-    $scope.view.session = {
-        sucursal: sucursalSession,
-        agencia: agenciaSession
     };
 
     $scope.combo = {
@@ -27,17 +21,20 @@ angular.module('mean.cooperativa').controller('Cooperativa.CrearBovedaController
     $scope.loadCombo = function () {
         $scope.combo.moneda = SGCurrency.$search().$object;
 
-        //CARGAR LOS COMBOS CON TODAS LAS SUCURSALES Y AGENCIAS
-        /*$scope.combo.sucursal = SGSucursal.$search().$object;
-         $scope.$watch('combo.selected.sucursal', function(){
-         if(angular.isDefined($scope.combo.selected.sucursal)){
-         $scope.combo.agencia = $scope.combo.selected.sucursal.$getAgencias().$object;
-         }
-         }, true);*/
+        if (angular.isArray(sucursales)) {
+            $scope.combo.sucursal = sucursales;
+            $scope.$watch('combo.selected.sucursal', function () {
+                if (angular.isDefined($scope.combo.selected.sucursal)) {
+                    $scope.combo.agencia = $scope.combo.selected.sucursal.$getAgencias().$object;
+                }
+            }, true);
+        } else {
+            $scope.combo.sucursal = [sucursales];
+            $scope.combo.agencia = [agencias];
 
-        //Cargar los combos solo con las sucursales y agencias del usuario que esta en session
-        $scope.combo.sucursal = [$scope.view.session.sucursal];
-        $scope.combo.agencia = [$scope.view.session.agencia];
+            $scope.combo.selected.sucursal = sucursales;
+            $scope.combo.selected.agencia = agencias;
+        }
     };
     $scope.loadCombo();
 
@@ -46,6 +43,7 @@ angular.module('mean.cooperativa').controller('Cooperativa.CrearBovedaController
         if ($scope.form.$valid) {
 
             $scope.view.boveda.moneda = $scope.combo.selected.moneda.alphabeticCode;
+            console.log($scope.combo.selected.agencia);
             $scope.view.boveda.agencia = $scope.combo.selected.agencia.codigo;
 
             $scope.view.boveda.$save().then(

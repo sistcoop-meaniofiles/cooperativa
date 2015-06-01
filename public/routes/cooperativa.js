@@ -3,6 +3,8 @@
 angular.module('mean.cooperativa').config(['$stateProvider',
     function ($stateProvider) {
 
+        var moduleName = 'cooperativa';
+
         // Check if user has role
         var checkUserRole = function (role, $q, $timeout, $http, $location, Auth) {
 
@@ -10,7 +12,7 @@ angular.module('mean.cooperativa').config(['$stateProvider',
             var deferred = $q.defer();
 
             // Authenticated
-            if (Auth.authz.hasResourceRole(role, 'cooperativa')) {
+            if (Auth.authz.hasResourceRole(role, moduleName)) {
                 $timeout(deferred.resolve);
             }
 
@@ -24,12 +26,33 @@ angular.module('mean.cooperativa').config(['$stateProvider',
             return deferred.promise;
         };
 
+        // Get session sucursal
+        var getSucursalesAutorizadasParaAdministrarBovedas = function ($q, $timeout, $http, $location, Auth, SGSucursal) {
+            if (Auth.authz.hasResourceRole('administrar-bovedas', moduleName)) {
+                return SGSucursal.$search();
+            } else if(Auth.authz.hasResourceRole('administrar-bovedas-agencia', moduleName)){
+                return SGSucursal.$find(Auth.sistcoop.sucursal);
+            } else {
+                return SGSucursal.$find(Auth.sistcoop.sucursal);
+            }
+        };
+        // Get session agencia
+        var getAgenciasAutorizadasParaAdministrarBovedas = function ($q, $timeout, $http, $location, Auth, SGSucursal) {
+            if (Auth.authz.hasResourceRole('administrar-bovedas', moduleName)) {
+                return undefined;
+            } else if(Auth.authz.hasResourceRole('administrar-bovedas-agencia', moduleName)){
+                return SGSucursal.$new(Auth.sistcoop.sucursal).$findAgencia(Auth.sistcoop.agencia);
+            } else {
+                return SGSucursal.$new(Auth.sistcoop.sucursal).$findAgencia(Auth.sistcoop.agencia);
+            }
+        };
 
         $stateProvider
             .state('cooperativa', {
                 abstract: true,
                 url: '/cooperativa',
-                templateUrl: 'cooperativa/views/_body.html'
+                templateUrl: 'cooperativa/views/_body.html',
+                controller: 'CooperativaController'
             })
             .state('cooperativa.home', {
                 url: '/home',
@@ -60,13 +83,13 @@ angular.module('mean.cooperativa').config(['$stateProvider',
                 controller: 'Cooperativa.BuscarBovedaController',
                 resolve: {
                     loggedin: function ($q, $timeout, $http, $location, Auth) {
-                        return checkUserRole('PUBLIC', $q, $timeout, $http, $location, Auth)
+                        return checkUserRole('ver-bovedas', $q, $timeout, $http, $location, Auth)
                     },
-                    sucursalSession: function(SGSession){
-                        return SGSession.getSucursal();
+                    sucursales: function($q, $timeout, $http, $location, Auth, SGSucursal){
+                        return getSucursalesAutorizadasParaAdministrarBovedas($q, $timeout, $http, $location, Auth, SGSucursal);
                     },
-                    agenciaSession: function(SGSession){
-                        return SGSession.getAgencia();
+                    agencias: function($q, $timeout, $http, $location, Auth, SGSucursal){
+                        return getAgenciasAutorizadasParaAdministrarBovedas($q, $timeout, $http, $location, Auth, SGSucursal);
                     }
                 }
             })
@@ -76,13 +99,13 @@ angular.module('mean.cooperativa').config(['$stateProvider',
                 controller: 'Cooperativa.CrearBovedaController',
                 resolve: {
                     loggedin: function ($q, $timeout, $http, $location, Auth) {
-                        return checkUserRole('JEFE_CAJA', $q, $timeout, $http, $location, Auth)
+                        return checkUserRole('ver-bovedas', $q, $timeout, $http, $location, Auth)
                     },
-                    sucursalSession: function(SGSession){
-                        return SGSession.getSucursal();
+                    sucursales: function($q, $timeout, $http, $location, Auth, SGSucursal){
+                        return getSucursalesAutorizadasParaAdministrarBovedas($q, $timeout, $http, $location, Auth, SGSucursal);
                     },
-                    agenciaSession: function(SGSession){
-                        return SGSession.getAgencia();
+                    agencias: function($q, $timeout, $http, $location, Auth, SGSucursal){
+                        return getAgenciasAutorizadasParaAdministrarBovedas($q, $timeout, $http, $location, Auth, SGSucursal);
                     }
                 }
             })

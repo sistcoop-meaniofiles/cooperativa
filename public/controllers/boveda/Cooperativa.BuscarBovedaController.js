@@ -2,15 +2,7 @@
 
 /* jshint -W098 */
 angular.module('mean.cooperativa').controller('Cooperativa.BuscarBovedaController',
-    function ($scope, $state, sucursalSession, agenciaSession, SGSucursal, SGBoveda) {
-
-        $scope.view = {};
-
-        //si tiene agencia y sucursal definida
-        $scope.view.session = {
-            sucursal: sucursalSession,
-            agencia: agenciaSession
-        };
+    function ($scope, $state, sucursales, agencias, SGSucursal, SGBoveda) {
 
         $scope.combo = {
             sucursal: undefined,
@@ -22,18 +14,20 @@ angular.module('mean.cooperativa').controller('Cooperativa.BuscarBovedaControlle
         };
 
         $scope.loadCombo = function () {
+            if (angular.isArray(sucursales)) {
+                $scope.combo.sucursal = sucursales;
+                $scope.$watch('combo.selected.sucursal', function () {
+                    if (angular.isDefined($scope.combo.selected.sucursal)) {
+                        $scope.combo.agencia = $scope.combo.selected.sucursal.$getAgencias().$object;
+                    }
+                }, true);
+            } else {
+                $scope.combo.sucursal = [sucursales];
+                $scope.combo.agencia = [agencias];
 
-            //CARGAR LOS COMBOS CON TODAS LAS SUCURSALES Y AGENCIAS
-            /*$scope.combo.sucursal = SGSucursal.$search().$object;
-             $scope.$watch('combo.selected.sucursal', function () {
-             if (angular.isDefined($scope.combo.selected.sucursal)) {
-             $scope.combo.agencia = $scope.combo.selected.sucursal.$getAgencias().$object;
-             }
-             }, true);*/
-
-            //Cargar los combos solo con las sucursales y agencias del usuario que esta en session
-            $scope.combo.sucursal = [$scope.view.session.sucursal];
-            $scope.combo.agencia = [$scope.view.session.agencia];
+                $scope.combo.selected.sucursal = sucursales;
+                $scope.combo.selected.agencia = agencias;
+            }
         };
         $scope.loadCombo();
 
